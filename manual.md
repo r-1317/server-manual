@@ -45,18 +45,17 @@ UEFIの設定を終えると、黒い画面が表示される<br>
 
 しばらく待つ
 
-### Gatewayの問題解決
-
 - 再起動後、USBを外す
-- UEFIのSecurity-Set Supervisor password
+- 起動できないため、一度電源を切り、UEFIを起動する。
+- UEFIの`Security-Set Supervisor password`を選択
   - 一時的なパスワードを入れる(何でも良い)
-- Select an UEFI file as tursted for executingを選択
-- EMMC -> EFI -> ubuntu -> shimx6.efiの順に選択
-  - ubuntuと名付ける
+- `Select an UEFI file as tursted for executing`を選択
+- `EMMC` → `EFI` → `ubuntu` → `shimx6.efi`の順に選択
+  - ubuntu と名付ける
 - パスワードを空に戻す
 - Save and exitをする
 
-Ubuntuが起動した。
+Ubuntuが起動する。
 
 <!--
 以下を実行
