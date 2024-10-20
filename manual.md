@@ -12,7 +12,7 @@
 ```ハッシュ値の確認
 certutil -hashfile <isoファイルのパス> sha256
 ```
-Ubuntuのダウンロードページにある
+Ubuntuをダウンロードしたページにある`SHA256SUMS`の値と同じであることを確認
 ## ブータブルUSBの作成
 画像のようにrufusを実行する<br>
 フォーマットオプションは初期状態で問題ない<br>
@@ -49,12 +49,12 @@ UEFIの設定を終えると、黒い画面が表示される<br>
 
 - 再起動後、USBを外す
 - UEFIのSecurity-Set Supervisor password
-  - なんかパスワードを入れる
-- Select an UEFI file as tursted for executing
-- EMMC -> EFI -> ubuntu -> shimx6.efi
+  - 一時的なパスワードを入れる(何でも良い)
+- Select an UEFI file as tursted for executingを選択
+- EMMC -> EFI -> ubuntu -> shimx6.efiの順に選択
   - ubuntuと名付ける
 - パスワードを空に戻す
-- Save and exit
+- Save and exitをする
 
 Ubuntuが起動した。
 
