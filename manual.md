@@ -50,7 +50,7 @@ UEFIの設定を終えると、黒い画面が表示される<br>
 - UEFIの`Security-Set Supervisor password`を選択
   - 一時的なパスワードを入れる(何でも良い)
 - `Select an UEFI file as tursted for executing`を選択
-- `EMMC` → `EFI` → `ubuntu` → `shimx6.efi`の順に選択
+- `EMMC` → `EFI` → `ubuntu` → `shimx64.efi`の順に選択
   - ubuntu と名付ける
 - パスワードを空に戻す
 - Save and exitをする
