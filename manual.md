@@ -14,9 +14,10 @@ certutil -hashfile <isoファイルのパス> sha256
 ```
 Ubuntuをダウンロードしたページにある`SHA256SUMS`の値と同じであることを確認
 ## ブータブルUSBの作成
-画像のようにrufusを実行する<br>
+画像1.1のようにrufusを実行する<br>
 フォーマットオプションは初期状態で問題ない<br>
-![](img/rufus.png)
+![](img/rufus.png)<br>
+画像1.1　Rufusの設定
 ## インストール
 ### UEFIの設定
 - 電源導入直後に(筆者の環境の場合)F2キーを押下
@@ -63,7 +64,26 @@ sudo apt update
 sudo apt upgrade
 -->
 
-### Ubuntuの設定
+# 2. Webサーバの構築
+## Apache HTTP Serverのインストール
+Apache HTTP Serverは、以下Apacheと呼称する。
+以下のコマンドを実行
+```
+sudo apt update
+sudo apt install apache2
+```
+### Apacheの起動
+```
+sudo systemctl start apache2
+sudo systemctl enable apache2
+sudo systemctl status apache2
+```
+
+### Apacheの動作を確認
+- [http://localhost](http://localhost) にアクセス<br>
+画像2.1のようなページが表示される。<br>
+![Apache Default Page](default-page.png)<br>
+画像2.1　Apache Default Page
 
 
 
