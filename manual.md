@@ -85,6 +85,94 @@ sudo systemctl status apache2
 ![Apache Default Page](default-page.png)<br>
 画像2.1　Apache Default Page
 
+## 仮想ホストの作成
+### 設定ファイルの作成
+以下のコマンドを実行<br>
+`ファイル名`には任意のファイル名を代入
+```
+sudo touch /etc/apache2/sites-available/ファイル名.conf
+```
+### 設定ファイルの編集
+設定ファイルに以下の内容を記述<br>
+`ディレクトリパス`・`ファイル名`には任意のディレクトリパス・ファイル名を代入
+```
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+	DocumentRoot ディレクトリパス
+	DirectoryIndex ファイル名
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+
+### ディレクトリの作成
+以下のコマンドを実行
+```
+sudo mkdir -p ディレクトリパス
+```
+
+### ファイルの作成
+以下のコマンドを実行
+```
+sudo touch ディレクトリパス/ファイル名
+```
+作成したファイルにページの内容を記述する
+
+### 仮想ホストの有効化
+以下のコマンドを実行
+```
+sudo a2ensite <ファイル名>.conf
+sudo systemctl reload apache2
+```
+
+### デフォルトの仮想ホストの無効化
+以下のコマンドを実行
+```
+sudo a2dissite 000-default.conf
+sudo systemctl reload apache2
+```
+
+### ファイアウォールの有効化とポート開放
+```
+sudo ufw enable
+sudo ufw allow ‘Apache Full’
+```
+
+## パスワード認証の設定
+### apache2-utilsパッケージのインストール
+以下のコマンドを実行
+```
+sudo apt install apache2-utils
+```
+
+### ユーザの登録
+初回の場合、下のコマンドを実行
+```
+sudo htpasswd -c /etc/apache2/.htpasswd ユーザ名
+```
+2回目以降の場合、下のコマンドを実行
+```
+sudo htpasswd /etc/apache2/.htpasswd ユーザ名
+```
+
+### 設定ファイルの編集
+仮想ホストの設定ファイルに認証のためのディレクティブを追加する<br>
+以下の内容を追加
+```
+<Directory "認証を利用するディレクトリパス">
+  AuthType Basic
+  AuthName "Restricted Content"
+  AuthUserFile /etc/apache2/.htpasswd
+  Require valid-user
+</Directory>
+```
+
+### Apacheの再起動
+以下のコマンドを実行
+```
+sudo systemctl reload apache2
+```
+
 
 
 # 参考文献
