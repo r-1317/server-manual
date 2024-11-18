@@ -82,7 +82,7 @@ sudo systemctl status apache2
 ### Apacheの動作を確認
 - [http://localhost](http://localhost) にアクセス<br>
 画像2.1のようなページが表示される。<br>
-![Apache Default Page](default-page.png)<br>
+![Apache Default Page](img/default-page.png)<br>
 画像2.1　Apache Default Page
 
 ## 仮想ホストの作成
@@ -173,6 +173,120 @@ sudo htpasswd /etc/apache2/.htpasswd ユーザ名
 sudo systemctl reload apache2
 ```
 
+# 3. SSHサーバの構築
+### OpenSSHのインストール
+以下のコマンドを実行
+```
+sudo apt install openssh-server
+```
+
+### OpenSSHの起動を確認
+以下のコマンドを実行
+```
+sudo systemctl ststus ssh
+```
+起動している場合、画像3.1のような出力がなされる。
+![sshがactiveである](img/ssh-active.png)<br>
+画像3.1
+### 起動していない場合
+以下のコマンドを実行
+```
+sudo systemctl start ssh
+sudo systemctl enable ssh
+```
+
+## ポート番号の設定
+### 設定のバックアップファイルを作成
+以下のコマンドを実行
+```
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_backup
+```
+
+### ポート番号の設定
+設定ファイル`/etc/ssh/sshd_config`から`#Port 22`記述されている行を探し、行頭にある`#`を削除し、`22`を任意のポート番号に変更する。
+```
+Port 任意のポート番号
+```
+
+### rootログインの禁止
+設定ファイル`/etc/ssh/sshd_config`に、以下の行を追記
+```
+PermitRootLogin no
+```
+
+### sshの再読み込み
+以下のコマンドを実行
+```
+sudo systemctl reload ssh
+```
+
+### ファイアウォールの設定
+以下のコマンドを実行
+```
+sudo ufw allow 任意のポート番号/tcp
+```
+
+### SSHでのログイン
+クライアントPCで、以下のコマンドを実行
+```
+ssh ユーザ名@ホスト名(もしくはIPアドレス) -p ポート番号
+```
+
+## 2段階認証の利用
+### クライアントの公開鍵・秘密鍵生成
+クライアントPCで以下のコマンドを実行
+```
+ssh-keygen -t ed25519 -f $HOME\.ssh\ファイル名
+```
+
+### 公開鍵の登録
+クライアントPCで以下のコマンドを実行<br>
+※必ず**公開鍵の**ファイル名を指定すること。
+```
+cat $HOME\.ssh\「公開鍵の」ファイル名 | ssh ユーザ名@ホスト名（もしくはIPアドレス） -p ポート番号 "mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+```
+
+### 2段階認証のパラメータ追加
+設定ファイル`/etc/ssh/sshd_config`に、以下の行を追記
+```
+AuthenticationMethods publickey,password
+```
+
+### sshの再読み込み
+以下のコマンドを実行
+```
+sudo systemctl reload ssh
+```
+
+### 接続テスト
+クライアントPCで、以下のコマンドを実行
+```
+ssh ユーザ名@ホスト名(もしくはIPアドレス) -p ポート番号 -i 秘密鍵のファイルパス
+```
+
+# 4. Dockerを使った環境構築や運用
+### Dockerのインストール
+以下のコマンドを実行
+```
+sudo apt-get update && sudo apt-get install ca-certificates curl && sudo install -m 0755 -d /etc/apt/keyrings && sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && sudo chmod a+r /etc/apt/keyrings/docker.asc
+```
+
+```
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu$(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+```
+sudo apt-get update && sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+### Dockerのバージョン確認と状態確認
+以下のコマンドを実行
+```
+sudo docker --version
+```
+```
+sudo systemctl status docker
+```
 
 
 # 参考文献
