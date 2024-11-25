@@ -187,7 +187,7 @@ sudo systemctl ststus ssh
 ```
 起動している場合、画像3.1のような出力がなされる。
 ![sshがactiveである](img/ssh-active.png)<br>
-画像3.1
+画像3.1　期待される実行結果
 ### 起動していない場合
 以下のコマンドを実行
 ```
@@ -287,6 +287,36 @@ sudo docker --version
 ```
 sudo systemctl status docker
 ```
+![dockerがactiveである](img/docker-active.png)<br>
+画像4.1　期待される出力
+
+
+### HelloWorldコンテナの起動
+以下のコマンドを実行
+```
+sudo docker container run hello-world
+```
+![hello-worldが実行されている](img/docker-hello-world.png)<br>
+画像4.2　期待される出力
+
+## Dockerを用いたWebサーバの構築
+### Webサーバ管理用のディレクトリの作成
+以下のコマンドを実行
+```
+mkdir -p ディレクトリ名/htdocs ディレクトリ名/conf
+```
+
+### httpdコンテナの起動
+`ディレクトリ名`のディレクトリで実行
+```
+sudo docker run -dit --name my-apache-app -p 8080:80 -v ./htdocs:/usr/local/apache2/htdocs/ -v ./conf:/usr/apache2/conf httpd:2.4
+```
+![webページが表示されている](img/index-of.png)
+画像4.3　期待される表示
+
+
+### コンテナの起動の確認
+Webブラウザで`localhost:8080`にアクセス
 
 
 # 参考文献
