@@ -311,13 +311,12 @@ mkdir -p ディレクトリ名/htdocs ディレクトリ名/conf
 ```
 sudo docker run -dit --name my-apache-app -p 8080:80 -v ./htdocs:/usr/local/apache2/htdocs/ -v ./conf:/usr/apache2/conf httpd:2.4
 ```
-![webページが表示されている](img/index-of.png)
-画像4.3　期待される表示
 
 
 ### コンテナの起動の確認
 Webブラウザで`localhost:8080`にアクセス
-
+![webページが表示されている](img/index-of.png)<br>
+画像4.3　期待される表示
 
 # 参考文献
 [【Windows】SHA256などのファイルハッシュ値を確認する方法](https://qiita.com/setonao/items/4e9edd3e2064c56507e4)
